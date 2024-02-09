@@ -127,3 +127,68 @@ class ImageProcessor:
 if __name__ == "__main__":
     IP = ImageProcessor()
     IP.run()
+
+
+from tkinter import Tk, Label, Button, Entry, filedialog
+from PIL import Image, ImageTk
+
+class ImageProcessorGUI:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Image Processor")
+
+        # 画像読み込みボタン
+        self.load_button = Button(root, text="画像読み込み", command=self.load_image)
+        self.load_button.grid(row=0, column=0)
+
+        # 画像プレビュー
+        self.image_preview = Label(root, text="画像プレビュー")
+        self.image_preview.grid(row=0, column=1)
+
+        # factor入力ボックス
+        self.factor_label = Label(root, text="Factor:")
+        self.factor_label.grid(row=1, column=0)
+        self.factor_entry = Entry(root)
+        self.factor_entry.grid(row=1, column=1)
+
+        # threshold入力ボックス
+        self.threshold_label = Label(root, text="Threshold:")
+        self.threshold_label.grid(row=2, column=0)
+        self.threshold_entry = Entry(root)
+        self.threshold_entry.grid(row=2, column=1)
+
+        # 実行ボタン
+        self.run_button = Button(root, text="実行", command=self.run)
+        self.run_button.grid(row=3, column=0, columnspan=2)
+
+        # EXITボタン
+        self.exit_button = Button(root, text="EXIT", command=root.quit)
+        self.exit_button.grid(row=4, column=0, columnspan=2)
+
+        # 画像処理用変数
+        self.image = None
+        self.new_cropped_image = None
+
+    def load_image(self):
+        file_path = filedialog.askopenfilename()
+        if file_path:
+            self.image = Image.open(file_path)
+            self.preview_image(file_path)
+
+    def preview_image(self, file_path):
+        img = Image.open(file_path)
+        img.thumbnail((100, 100))
+        img = ImageTk.PhotoImage(img)
+        self.image_preview.configure(image=img)
+        self.image_preview.image = img
+
+    def run(self):
+        # ここに`run`メソッドの内容を実装
+        pass
+
+    # 既存のImageProcessorクラスのメソッドをここに統合または適応させる
+
+if __name__ == "__main__":
+    root = Tk()
+    app = ImageProcessorGUI(root)
+    root.mainloop()
